@@ -1,5 +1,43 @@
+import telebot
+from telebot import types
 from FUN import *
 
-print(RwySlope(800,603,8506))
-print(FlightLink('URSS','LTBS'))
-print(Encryption('Максим-ЛР1'))
+bot = telebot.TeleBot('7678445926:AAFJHrBTmUvYh9RxCXjSIEmN4ODSqIb_muQ')
+markup_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
+btn1 = types.KeyboardButton('Рассчитать Slope')
+btn2 = types.KeyboardButton('Ссылка на simbrief')
+btn3 = types.KeyboardButton('Сделать пароль')
+markup_main.add(btn1,btn2,btn3)
+current_mode = 0
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.send_message(message.from_user.id,'Привет',reply_markup=markup_main)
+    global current_mode
+    current_mode = 0
+
+@bot.message_handler(content_types=['text'])
+def get_text_messages(message):
+    global current_mode
+    markup_sub = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    back = types.KeyboardButton('Назад')
+    markup_sub.add(back)
+    if current_mode == 0:
+        if message.text == 'Рассчитать Slope':
+            current_mode = 1
+            bot.send_message(message.from_user.id,'Отправьте в формате: превышение_у_торца превышение_на_противоположном торце длина_впп',reply_markup=markup_sub)
+        elif message.text == 'Ссылка на simbrief':
+            current_mode = 2
+        elif message.text == 'Сделать пароль':
+            current_mode = 3
+        elif message.text == 'Назад':
+            current_mode = 4
+            bot.send_message(message.from_user.id,'Привет',reply_markup=markup_main)
+    elif current_mode == 1:
+        
+        args = message.text.split()
+        bot.send_message(message.from_user.id,RwySlope(int(args[0]), int(args[1]),int(args[2])),reply_markup=markup_main)
+        current_mode = 0
+
+
+bot.polling(non_stop=True,interval=0)
