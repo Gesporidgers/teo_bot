@@ -28,16 +28,19 @@ def get_text_messages(message):
             bot.send_message(message.from_user.id,'Отправьте в формате: превышение_у_торца превышение_на_противоположном торце длина_впп',reply_markup=markup_sub)
         elif message.text == 'Ссылка на simbrief':
             current_mode = 2
+            bot.send_message(message.from_user.id,'Отправьте в формате: аэропорт_отправления аэропорт_назначения',reply_markup=markup_sub)
         elif message.text == 'Сделать пароль':
             current_mode = 3
         elif message.text == 'Назад':
             current_mode = 4
             bot.send_message(message.from_user.id,'Привет',reply_markup=markup_main)
     elif current_mode == 1:
-        
         args = message.text.split()
         bot.send_message(message.from_user.id,RwySlope(int(args[0]), int(args[1]),int(args[2])),reply_markup=markup_main)
         current_mode = 0
+    elif current_mode == 2:
+        args = message.text.split()
+        bot.send_message(message.from_user.id,FlightLink(args[0],args[1]),reply_markup=markup_main)
 
 
 bot.polling(non_stop=True,interval=0)

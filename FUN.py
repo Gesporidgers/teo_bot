@@ -5,7 +5,7 @@ def RwySlope(Elev_THS,Elev_far,Length):
     return round(res,2)
 
 def FlightLink(Orig, Dest):
-    return "https://dispatch.simbrief.com/options/custom?orig="+ Orig +"&dest="+Dest
+    return "https://dispatch.simbrief.com/options/custom?orig="+ Orig.upper() +"&dest="+Dest.upper()
 
 def Encryption(message):
     (pub, priv) = rsa.newkeys(256)
