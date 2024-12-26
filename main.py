@@ -1,5 +1,6 @@
 import telebot
 from telebot import types
+from telebot import formatting
 from FUN import *
 
 bot = telebot.TeleBot('7678445926:AAFJHrBTmUvYh9RxCXjSIEmN4ODSqIb_muQ')
@@ -30,9 +31,10 @@ def get_text_messages(message):
             current_mode = 2
             bot.send_message(message.from_user.id,'Отправьте в формате: аэропорт_отправления аэропорт_назначения',reply_markup=markup_sub)
         elif message.text == 'Сделать пароль':
+            bot.send_message(message.from_user.id,'Отправьте что нужно зашифровать',reply_markup=markup_sub)
             current_mode = 3
         elif message.text == 'Назад':
-            current_mode = 4
+            current_mode = 0
             bot.send_message(message.from_user.id,'Привет',reply_markup=markup_main)
     elif current_mode == 1:
         args = message.text.split()
@@ -41,6 +43,10 @@ def get_text_messages(message):
     elif current_mode == 2:
         args = message.text.split()
         bot.send_message(message.from_user.id,FlightLink(args[0],args[1]),reply_markup=markup_main)
+        current_mode = 0
+    elif current_mode == 3:
+        bot.send_message(message.from_user.id,'`'+Encryption(message.text)+'`',reply_markup=markup_main,parse_mode='MARKDOWN')
+        current_mode = 0
 
 
 bot.polling(non_stop=True,interval=0)
