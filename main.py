@@ -4,6 +4,7 @@ from telebot import formatting
 from FUN import *
 
 bot = telebot.TeleBot('7678445926:AAFJHrBTmUvYh9RxCXjSIEmN4ODSqIb_muQ')
+bot.set_webhook()
 markup_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
 btn1 = types.KeyboardButton('Рассчитать Slope')
 btn2 = types.KeyboardButton('Ссылка на simbrief')
